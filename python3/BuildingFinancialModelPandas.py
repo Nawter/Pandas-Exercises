@@ -47,16 +47,16 @@ df["Balance"] = 0
 df.loc[1, "Balance"] = iniPrincipal + df.loc[1, "Principal"] + df.loc[1, "AddPrincipal"]
 for i in range(2,  len(df) + 1):
     # Get the previous balance as well as current Payments
-    prevBalance = df.ix[i-1, 'Balance']
-    principal = df.ix[i, 'Principal']
-    addPrincipal = df.ix[i, "AddPrincipal"]
+    prevBalance = df.loc[i-1, 'Balance']
+    principal = df.loc[i, 'Principal']
+    addPrincipal = df.loc[i, "AddPrincipal"]
     # If there is no balance, then do zero out the principal and interest
     if prevBalance == 0:
-        df.ix[i, ['Payment', 'Principal', 'Interest', 'AddPrincipal', 'Balance']] = 0
+        df.loc[i, ['Payment', 'Principal', 'Interest', 'AddPrincipal', 'Balance']] = 0
         continue
     # If there is a payment does not pay it off, reduce the balance
     if abs(principal + addPrincipal) <= prevBalance:
-        df.ix[i, 'Balance'] = principal + prevBalance + addPrincipal
+        df.loc[i, 'Balance'] = principal + prevBalance + addPrincipal
     # If it does pay it off(When you pay all the mortgage), zero out the balance and adjust the final payment
     else:
         # Just adjust the principal down
@@ -65,10 +65,10 @@ for i in range(2,  len(df) + 1):
             addPrincipal = 0
         else:
             addPrincipal = (prevBalance - abs(principal))
-        df.ix[i, 'Balance'] = 0
-        df.ix[i, 'Principal'] = principal
-        df.ix[i, 'AddPrincipal'] = addPrincipal
-        df.ix[i, 'Payment'] = principal + df.ix[i, 'Interest']
+        df.loc[i, 'Balance'] = 0
+        df.loc[i, 'Principal'] = principal
+        df.loc[i, 'AddPrincipal'] = addPrincipal
+        df.loc[i, 'Payment'] = principal + df.loc[i, 'Interest']
 df = df.round(2)
 
 
